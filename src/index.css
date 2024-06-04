@@ -1,0 +1,6 @@
+/* Importa Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Aquí puedes agregar tus estilos personalizados */
