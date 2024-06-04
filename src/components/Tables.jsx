@@ -48,7 +48,7 @@ const Tables = () => {
     const [numeroSeleccionado, setNumeroSeleccionado] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-    const [timeLeft, setTimeLeft] = useState(10); // 180 segundos
+    const [timeLeft, setTimeLeft] = useState(90); // 180 segundos
     const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
@@ -106,7 +106,7 @@ const Tables = () => {
         const nuevosEjercicios = [...ejercicios];
         nuevosEjercicios[index].visible = false;
         setIsPlaying(true);
-        setTimeLeft(10); // Reiniciar el contador de tiempo cuando el usuario comienza a jugar
+        setTimeLeft(90); // Reiniciar el contador de tiempo cuando el usuario comienza a jugar
     };
 
     const procedimientoConSaltosDeLinea = ejercicios[index].procedimiento.split(';').map((linea, index) => (
@@ -115,9 +115,8 @@ const Tables = () => {
 
     return (
         <div className="container mx-auto">
-            <div className="flex justify-center mt-11 ">
-
-                <table className="table-auto border-collapse border border-gray-800 ">
+            <div className="flex flex-col justify-center mt-11">
+                <table className="table-auto border-collapse border border-gray-800 overflow-x-auto">
                     <thead>
                         <tr>
                             <th colSpan={8} className="px-4 py-2 bg-gray-800 text-white animate-blurred-fade-in">Respuestas de ejercicios</th>
@@ -135,17 +134,17 @@ const Tables = () => {
                 </table>
                 {
                     isPlaying && (
-                        <span className='text-white ml-4'>
+                        <span className='text-white mt-6 ml-4 flex justify-center'>
                             {' ⏲️ ' + timeLeft}
                         </span>
                     )
                 }
 
             </div>
-            <div className="container mx-auto mt-5">
+            <div className="mt-5">
                 <h2 className="text-center text-xl font-bold mb-4 text-white animate-zoom-in">Listados de ejercicios</h2>
                 <div className="flex justify-center mt-11">
-                    <table className="table-auto border-collapse border border-gray-800">
+                    <table className="table-auto border-collapse border border-gray-800 overflow-x-auto">
                         <thead>
                             <tr>
                                 <th className="px-4 py-2 bg-gray-800 text-white">N°</th>
@@ -165,13 +164,13 @@ const Tables = () => {
                     </table>
                 </div>
                 <div className="flex justify-center mt-4">
-                    <button onClick={handleJugar} className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button className="mr-4 sm:mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Jugar
                     </button>
-                    <button onClick={handleAnteriorEjercicio} className="mr-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    <button onClick={handleAnteriorEjercicio} className="mr-4 sm:mr-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                         Anterior ejercicio
                     </button>
-                    <button onClick={handleSiguienteEjercicio} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    <button onClick={handleSiguienteEjercicio} className="mr-4 sm:mr-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                         Siguiente ejercicio
                     </button>
                 </div>
