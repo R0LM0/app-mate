@@ -4,3 +4,13 @@
 @tailwind utilities;
 
 /* Aquí puedes agregar tus estilos personalizados */
+
+html {
+    font-family: 'Jost Variable', system-ui, sans-serif;
+    background: #13151a;
+}
+
+.espacio-extra {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
