@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const datos = [
     [25, 9, 3.5, 7, 27, 2, 17],
@@ -19,8 +19,15 @@ const ejercicios = [
     {
         id: 2,
         ejercicio: "2) 2x-4 + 2x -12",
-        procedimiento: "4x-4 = 12 ;  4x-4+4 = 12+4 ; 4x = 16 ; 4x/4 = 16/4 , x = 4",
+        procedimiento: "4x-4 = 12 ;  4x-4+4 = 12+4 ; 4x = 16 ; 4x/4 = 16/4 ; x = 4",
         respuesta: 4,
+        visible: false
+    },
+    {
+        id: 3,
+        ejercicio: "3) 2x+5 = 9",
+        procedimiento: "2x+5-5 = 9-5 ; 2x = 4 ; 2x/2 = 4/2 ; 1x = 2 ; x = 2/1 ; x = 2",
+        respuesta: 2,
         visible: false
     },
     // Agrega más ejercicios según sea necesario
@@ -41,28 +48,44 @@ const Tables = () => {
     const [numeroSeleccionado, setNumeroSeleccionado] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [timeLeft, setTimeLeft] = useState(10); // 180 segundos
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(() => {
+        let timer;
+        if (isPlaying && timeLeft > 0) {
+            timer = setTimeout(() => {
+                setTimeLeft(timeLeft - 1);
+            }, 1000); // Actualizar el tiempo cada segundo
+        } else if (timeLeft === 0) {
+            setModalMessage("⏲️ Tiempo Agotado ⏲️");
+            setModalIsOpen(true);
+        }
+
+        // Limpiar el temporizador cuando el componente se desmonta o cuando el tiempo llega a cero
+        return () => clearTimeout(timer);
+    }, [timeLeft, isPlaying]);
 
     const handleMostrarProcedimiento = () => {
-        if (numeroSeleccionado !== null && numeroSeleccionado !== ejercicios[index].respuesta) {
-            setModalMessage("Procedimiento");
-            setModalIsOpen(true);
-            return;
-        }
+        if (!isPlaying) return; // Solo muestra el procedimiento si el juego está en marcha
 
         const nuevosEjercicios = [...ejercicios];
         nuevosEjercicios[index].visible = true;
         setIndex(index); // No es necesario actualizar el índice, pero lo hacemos para forzar una re-renderización
+
+        setModalIsOpen(true);
     };
 
     const handleNumeroSeleccionado = (numero) => {
+        if (!isPlaying) return; // Solo permite seleccionar números si el juego está en marcha
+
         if (ejercicios[index].respuesta === numero) {
             setModalMessage("🎉 ¡Bingo! 🎉");
-            setModalIsOpen(true);
         } else {
             setModalMessage("😵 Respuesta incorrecta 😵");
-            setModalIsOpen(true);
         }
         setNumeroSeleccionado(numero);
+        handleMostrarProcedimiento();
     };
 
     const handleSiguienteEjercicio = () => {
@@ -79,14 +102,22 @@ const Tables = () => {
         }
     };
 
+    const handleJugar = () => {
+        const nuevosEjercicios = [...ejercicios];
+        nuevosEjercicios[index].visible = false;
+        setIsPlaying(true);
+        setTimeLeft(10); // Reiniciar el contador de tiempo cuando el usuario comienza a jugar
+    };
+
     const procedimientoConSaltosDeLinea = ejercicios[index].procedimiento.split(';').map((linea, index) => (
         <p key={index}>{linea}</p>
     ));
 
     return (
         <div className="container mx-auto">
-            <div className="flex justify-center mt-11">
-                <table className="table-auto border-collapse border border-gray-800">
+            <div className="flex justify-center mt-11 ">
+
+                <table className="table-auto border-collapse border border-gray-800 ">
                     <thead>
                         <tr>
                             <th colSpan={8} className="px-4 py-2 bg-gray-800 text-white animate-blurred-fade-in">Respuestas de ejercicios</th>
@@ -96,12 +127,20 @@ const Tables = () => {
                         {datos.map((fila, indexFila) => (
                             <tr key={indexFila}>
                                 {fila.map((valor, indexColumna) => (
-                                    <td key={indexColumna} className="border px-4 py-2 bg-gray-900 text-white hover:bg-gray-700 hover:text-white animate-pulse" onClick={() => handleNumeroSeleccionado(valor)}>{valor}</td>
+                                    <td key={indexColumna} className="border px-4 py-2 bg-gray-900 text-white hover:bg-gray-700 hover:text-white" onClick={() => handleNumeroSeleccionado(valor)}>{valor}</td>
                                 ))}
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                {
+                    isPlaying && (
+                        <span className='text-white ml-4'>
+                            {' ⏲️ ' + timeLeft}
+                        </span>
+                    )
+                }
+
             </div>
             <div className="container mx-auto mt-5">
                 <h2 className="text-center text-xl font-bold mb-4 text-white animate-zoom-in">Listados de ejercicios</h2>
@@ -126,8 +165,8 @@ const Tables = () => {
                     </table>
                 </div>
                 <div className="flex justify-center mt-4">
-                    <button onClick={handleMostrarProcedimiento} className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Ver procedimiento
+                    <button onClick={handleJugar} className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Jugar
                     </button>
                     <button onClick={handleAnteriorEjercicio} className="mr-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                         Anterior ejercicio
@@ -143,7 +182,7 @@ const Tables = () => {
                             <div className="fixed inset-0 bg-black opacity-50"></div>
                             <div className="bg-white rounded-lg p-8 max-w-md mx-auto z-50">
                                 <div className="text-center">
-                                    <h2 className="text-lg font-bold mb-4 animate-blurred-fade-in">Procedimiento</h2>
+                                    <h2 className="text-lg font-bold mb-4 animate-blurred-fade-in">La Respuesta del Ejercicio</h2>
                                     <p className="text-gray-700 animate-rotate-360">{modalMessage}</p>
                                 </div>
                                 <div className="mt-6 text-center">
