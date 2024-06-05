@@ -11,21 +11,21 @@ const datos = [
 const ejercicios = [
     {
         id: 1,
-        ejercicio: "1) x + 1 = 10x + 10",
+        ejercicio: "x + 1 = 10x + 10",
         procedimiento: "x - 10x = 10 - 1; -9x = 9; x = 9/9; x = 1",
         respuesta: -1,
         visible: false
     },
     {
         id: 2,
-        ejercicio: "2) 2x-4 + 2x -12",
+        ejercicio: "2x-4 + 2x -12",
         procedimiento: "4x-4 = 12 ;  4x-4+4 = 12+4 ; 4x = 16 ; 4x/4 = 16/4 ; x = 4",
         respuesta: 4,
         visible: false
     },
     {
         id: 3,
-        ejercicio: "3) 2x+5 = 9",
+        ejercicio: "2x+5 = 9",
         procedimiento: "2x+5-5 = 9-5 ; 2x = 4 ; 2x/2 = 4/2 ; 1x = 2 ; x = 2/1 ; x = 2",
         respuesta: 2,
         visible: false
