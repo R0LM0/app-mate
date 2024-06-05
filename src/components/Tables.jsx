@@ -164,7 +164,7 @@ const Tables = () => {
                     </table>
                 </div>
                 <div className="flex justify-center mt-4">
-                    <button className="mr-4 sm:mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button onClick={handleJugar} className="mr-4 sm:mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Jugar
                     </button>
                     <button onClick={handleAnteriorEjercicio} className="mr-4 sm:mr-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
