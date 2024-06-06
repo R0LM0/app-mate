@@ -31,21 +31,21 @@ const ejercicios = [
     {
         id: 5,
         ejercicio: "5x-9 = 3x+6",
-        procedimiento: "5x-3x = 6+9; 2x = 15; x = 15/2 ; x = 7.5",
+        procedimiento: "5x-3x = 6+9; 2x = 15; 2x/2 = 15/2 ;x = 15/2 ; x = 7.5",
         respuesta: 7.5,
         visible: false
     },
     {
         id: 6,
         ejercicio: "2x - 5 = 3x+4",
-        procedimiento: "2z-3x = 4+5; -x = 9; 1(-1)x = 9(-1); 1x = -9; x = -9",
-        respuesta: 7.5,
+        procedimiento: "2x-3x = 4+5; -x = 9; -x (-1)= 9x-1; x = -9",
+        respuesta: -9,
         visible: false
     },
     {
         id: 7,
         ejercicio: "5x-1 = 7x-4",
-        procedimiento: "5x-7x = -4+1; -2x = -3; 2x = 3; x = 3/2 ; x = 1.5",
+        procedimiento: "5x-7x = -4+1; -2x = -3; -2x/-2 = -3/-2; x = 3/2 ; x = 1.5",
         respuesta: 1.5,
         visible: false
     },
