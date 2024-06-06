@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import BgFondo from '../assets/MathBG.jpg'
 
 const datos = [
     [25, 9, 3.5, 7, 27, 2, 17],
@@ -114,7 +115,8 @@ const Tables = () => {
     ));
 
     return (
-        <div className="container mx-auto">
+
+        <div className="container mx-auto" >
             <div className="flex flex-col justify-center mt-11">
                 <table className="table-auto border-collapse border border-gray-800 overflow-x-auto">
                     <thead>
