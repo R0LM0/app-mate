@@ -17,7 +17,7 @@ const ejercicios = [
     {
         id: 3,
         ejercicio: "2x+5 = 9",
-        procedimiento: "2x+5-5 = 9-5 ; 2x = 4 ; 2x/2 = 4/2 ; 1x = 2 ; x = 2/1 ; x = 2",
+        procedimiento: "2x = 9-5 ; 2x = 4 ; 2x/2 = 4/2 ; 1x = 2 ; x = 2/1 ; x = 2",
         respuesta: 2,
         visible: false
     },

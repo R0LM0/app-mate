@@ -110,9 +110,9 @@ const Tables = ({ audio, bien, mal }) => {
 
     return (
 
-        <div className="container mx-auto" >
+        <div className="container mx-auto " >
             <div className="flex flex-col justify-center mt-11">
-                <table className="table-auto border-collapse border border-gray-800 overflow-x-auto">
+                <table className="table-auto border-collapse border border-gray-800 overflow-x-auto ">
                     <thead>
                         <tr>
                             <th colSpan={8} className="px-4 py-2 bg-gray-800 text-white animate-blurred-fade-in">Respuestas de ejercicios</th>
