@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ImgReloj from '../assets/reloj.png'
 import datos from './datos';
 import ejercicios from './ejercicios';
@@ -42,71 +42,71 @@ const Tables = ({ audio, bien, mal }) => {
     const handleStopAudio = () => {
         audio.pause();
         audio.currentTime = 0;
-
     }
 
 
-    const handleMostrarProcedimiento = () => {
-        if (!isPlaying) return; // Solo muestra el procedimiento si el juego está en marcha
+    const handleMostrarProcedimiento = useCallback(() => {
+        if (!isPlaying) return;
 
         const nuevosEjercicios = [...ejercicios];
         nuevosEjercicios[index].visible = true;
-        setIndex(index); // No es necesario actualizar el índice, pero lo hacemos para forzar una re-renderización
-
         setModalIsOpen(true);
-    };
+    }, [isPlaying, index]);
 
-    const handleNumeroSeleccionado = (numero) => {
-        if (!isPlaying) return; // Solo permite seleccionar números si el juego está en marcha
+
+
+    const handleNumeroSeleccionado = useCallback((numero) => {
+        if (!isPlaying) return;
 
         if (ejercicios[index].respuesta === numero) {
             setModalMessage("🎉 ¡Bingo! 🎉");
             setIsPlaying(false);
             handleStopAudio();
             bien.play()
-            // Reiniciar número seleccionado al cambiar de ejercicio
         } else {
             setModalMessage("😵 Respuesta incorrecta 😵");
             setIsPlaying(false);
             handleStopAudio();
             mal.play()
-            // Reiniciar número seleccionado al cambiar de ejercicio
         }
         setNumeroSeleccionado(numero);
         handleMostrarProcedimiento();
-    };
+    }, [isPlaying, index, handleMostrarProcedimiento]);
 
-    const handleSiguienteEjercicio = () => {
+    const handleNumeroSeleccionadoCurried = useCallback((numero) => () => handleNumeroSeleccionado(numero), [handleNumeroSeleccionado]);
+
+    const handleSiguienteEjercicio = useCallback(() => {
         if (index < ejercicios.length - 1) {
             setIndex(index + 1);
             setNumeroSeleccionado(null);
             setIsPlaying(false);
             handleStopAudio();
-
         }
-    };
+    }, [index]);
 
-    const handleAnteriorEjercicio = () => {
+    const handleAnteriorEjercicio = useCallback(() => {
         if (index > 0) {
             setIndex(index - 1);
-            setNumeroSeleccionado(null); // Reiniciar número seleccionado al cambiar de ejercicio
+            setNumeroSeleccionado(null);
             setIsPlaying(false);
             handleStopAudio();
-
         }
-    };
+    }, [index]);
 
-    const handleJugar = () => {
+    const handleJugar = useCallback(() => {
         const nuevosEjercicios = [...ejercicios];
         nuevosEjercicios[index].visible = false;
         audio.play();
         setIsPlaying(true);
-        setTimeLeft(90); // Reiniciar el contador de tiempo cuando el usuario comienza a jugar
-    };
+        setTimeLeft(90);
+    }, [index]);
 
-    const procedimientoConSaltosDeLinea = ejercicios[index].procedimiento.split(';').map((linea, index) => (
-        <p key={index}>{linea}</p>
-    ));
+
+
+    const procedimientoConSaltosDeLinea = useMemo(() =>
+        ejercicios[index].procedimiento.split(';').map((linea, index) => (
+            <p key={index}>{linea}</p>
+        )), [index]);
 
     return (
 
@@ -122,7 +122,7 @@ const Tables = ({ audio, bien, mal }) => {
                         {datos.map((fila, indexFila) => (
                             <tr key={indexFila}>
                                 {fila.map((valor, indexColumna) => (
-                                    <td key={indexColumna} className="border px-4 py-2 bg-gray-900 text-white hover:bg-gray-700 hover:text-white" onClick={() => handleNumeroSeleccionado(valor)}>{valor}</td>
+                                    <td key={indexColumna} className="border px-4 py-2 bg-gray-900 text-white hover:bg-gray-700 hover:text-white" onClick={handleNumeroSeleccionadoCurried(valor)}>{valor}</td>
                                 ))}
                             </tr>
                         ))}
